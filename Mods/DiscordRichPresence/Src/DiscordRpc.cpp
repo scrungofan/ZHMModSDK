@@ -66,7 +66,8 @@ void DiscordRpc::PopulateScenes()
 		{ "edgy", "Berlin" },
 		{ "wet", "Chongqing" },
 		{ "elegant", "Mendoza" },
-		{ "trapped", "Carpathian Mountains" }
+		{ "trapped", "Carpathian Mountains" },
+		{ "rocky", "Ambrose Island" }
 	};
 	Logger::Trace("Finished populating scene map");
 }
@@ -121,6 +122,7 @@ void DiscordRpc::PopulateCodenameHints()
 		{ "Sheep", "Nightcall" },
 		{ "Gecko", "On Top Of The World" },
 		{ "Flu", "Patient Zero" },
+		{ "Dugong", "Shadows In The Water" },
 		{ "SnowCrane", "Situs Inversus" },
 		{ "Ebola", "The Author" },
 		{ "Llama", "The Farewell" },

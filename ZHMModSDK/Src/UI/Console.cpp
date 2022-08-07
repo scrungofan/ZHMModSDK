@@ -41,49 +41,58 @@ void Console::Draw(bool p_HasFocus)
 		ImGui::BeginChild("ScrollingRegion", ImVec2(0, -s_FooterHeight), false, ImGuiWindowFlags_HorizontalScrollbar);
 
 		AcquireSRWLockShared(&m_Lock);
-
 		if (m_LogLines)
 		{
-			for (auto& s_LogLine : *m_LogLines)
+			ImGuiListClipper clipper(m_LogLines->size(), ImGui::GetTextLineHeightWithSpacing());
+			while (clipper.Step())
 			{
-				ImVec4 s_Color;
-				bool s_Colored = false;
-
-				if (s_LogLine.Level == spdlog::level::trace)
+				for(int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
 				{
-					s_Color = ImVec4(168.f / 255.f, 61.f / 255.f, 255.f / 255.f, 1.f);
-					s_Colored = true;
-				}
-				else if (s_LogLine.Level == spdlog::level::debug)
-				{
-					s_Color = ImVec4(61.f / 255.f, 129.f / 255.f, 255.f / 255.f, 1.f);
-					s_Colored = true;
-				}
-				else if (s_LogLine.Level == spdlog::level::warn)
-				{
-					s_Color = ImVec4(255.f / 255.f, 168.f / 255.f, 61.f / 255.f, 1.f);
-					s_Colored = true;
-				}
-				else if (s_LogLine.Level == spdlog::level::err || s_LogLine.Level == spdlog::level::critical)
-				{
-					s_Color = ImVec4(255.f / 255.f, 69.f / 255.f, 69.f / 255.f, 1.f);
-					s_Colored = true;
-				}
+					LogLine& s_LogLine = m_LogLines->at(i);
+					ImVec4 s_Color;
+					bool s_Colored = false;
 
-				if (s_Colored)
-					ImGui::PushStyleColor(ImGuiCol_Text, s_Color);
+					if (s_LogLine.Level == spdlog::level::trace)
+					{
+						s_Color = ImVec4(168.f / 255.f, 61.f / 255.f, 255.f / 255.f, 1.f);
+						s_Colored = true;
+					}
+					else if (s_LogLine.Level == spdlog::level::debug)
+					{
+						s_Color = ImVec4(61.f / 255.f, 129.f / 255.f, 255.f / 255.f, 1.f);
+						s_Colored = true;
+					}
+					else if (s_LogLine.Level == spdlog::level::warn)
+					{
+						s_Color = ImVec4(255.f / 255.f, 168.f / 255.f, 61.f / 255.f, 1.f);
+						s_Colored = true;
+					}
+					else if (s_LogLine.Level == spdlog::level::err || s_LogLine.Level == spdlog::level::critical)
+					{
+						s_Color = ImVec4(255.f / 255.f, 69.f / 255.f, 69.f / 255.f, 1.f);
+						s_Colored = true;
+					}
 
-				ImGui::TextUnformatted(s_LogLine.Text.c_str(), s_LogLine.Text.c_str() + s_LogLine.Text.size());
+					if (s_Colored)
+						ImGui::PushStyleColor(ImGuiCol_Text, s_Color);
 
-				if (s_Colored)
-					ImGui::PopStyleColor();
+					ImGui::TextUnformatted(s_LogLine.Text.c_str(), s_LogLine.Text.c_str() + s_LogLine.Text.size());
+
+					if (s_Colored)
+						ImGui::PopStyleColor();
+				}
+			}
+			clipper.End();
+
+			if (m_ShouldScroll)
+			{
+				// Auto scroll to bottom.
+				ImGui::SetScrollHereY();
+				m_ShouldScroll = false;
 			}
 		}
 
 		ReleaseSRWLockShared(&m_Lock);
-
-		// Auto scroll to bottom.
-		ImGui::SetScrollHereY(1.0f);
 
 		ImGui::EndChild();
 
