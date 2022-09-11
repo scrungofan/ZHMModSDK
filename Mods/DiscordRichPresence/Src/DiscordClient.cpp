@@ -34,7 +34,10 @@ void DiscordClient::Update(const std::string& p_State, const std::string& p_Deta
 
 void DiscordClient::Callback()
 {
-	m_Core->RunCallbacks();
+	if (m_DiscordInitResult == discord::Result::Ok)
+	{
+		m_Core->RunCallbacks();
+	}
 }
 
 void DiscordClient::Teardown()
