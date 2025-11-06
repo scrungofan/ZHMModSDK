@@ -65,7 +65,7 @@ void Editor::EntityRefProperty(ZEntityRef p_Entity)
     ImVec4 s_LinkColor = ImVec4(0.2f, 0.6f, 1.0f, 1.0f);
 
     ImGui::PushStyleColor(ImGuiCol_Text, s_LinkColor);
-    ImGui::Text("%s", "link");
+	ImGui::Text("%s", fmt::format("{:016x}", p_Entity->GetType()->m_nEntityId).c_str());
     ImGui::PopStyleColor();
 
     if (ImGui::IsItemHovered()) {
@@ -77,6 +77,15 @@ void Editor::EntityRefProperty(ZEntityRef p_Entity)
 
             ImGui::GetColorU32(s_LinkColor)
         );
+		
+		auto s_EntityTreeNode = Editor::m_CachedEntityTreeMap.find(p_Entity);
+		if (s_EntityTreeNode != Editor::m_CachedEntityTreeMap.end() && s_EntityTreeNode->second) {
+			ImGui::SetTooltip("%s", s_EntityTreeNode->second->Name.c_str());
+		}
+		else
+		{
+			ImGui::SetTooltip("%s", "Entity tree not loaded, rebuild the entity tree");
+		};
     }
 
     if (ImGui::IsItemClicked()) {
