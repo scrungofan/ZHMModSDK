@@ -10,11 +10,14 @@ void Editor::ResourceProperty(const std::string& p_Id, ZEntityRef p_Entity, ZEnt
     if (s_ResourcePtr && s_ResourcePtr->m_nResourceIndex.val >= 0) {
         const auto& rid = s_ResourcePtr->GetResourceInfo().rid;
         s_RuntimeResourceID = fmt::format("{:08X}{:08X}", rid.m_IDHigh, rid.m_IDLow);
+
+        ImGui::TextUnformatted(s_RuntimeResourceID.c_str());
+
+        if (ImGuiCopyWidget(("Resource_" + p_Id).c_str())) {
+            CopyToClipboard(s_RuntimeResourceID.c_str());
+        }
     }
-
-    ImGui::TextUnformatted(s_RuntimeResourceID.c_str());
-
-    if (ImGuiCopyWidget(("Resource_" + p_Id).c_str())) {
-        CopyToClipboard(s_RuntimeResourceID.c_str());
+    else {
+        ImGui::TextUnformatted(s_RuntimeResourceID.c_str());
     }
 }
