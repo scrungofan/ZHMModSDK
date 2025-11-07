@@ -54,12 +54,40 @@ public:
     virtual void IEntityBlueprintFactory_unk31() = 0;
     virtual void IEntityBlueprintFactory_unk32() = 0;
 
-    inline bool IsTemplateEntityBlueprintFactory() const {
-        return Globals::ZTemplateEntityBlueprintFactory_vtbl == *(void**) this;
+    bool IsTemplateEntityBlueprintFactory() const {
+        return Globals::ZTemplateEntityBlueprintFactory_vtbl == *(void**)this;
     }
 
-    inline bool IsAspectEntityBlueprintFactory() const {
+    bool IsAspectEntityBlueprintFactory() const {
         return Globals::ZAspectEntityBlueprintFactory_vtbl == *(void**)this;
+    }
+
+    bool IsCppEntityBlueprintFactory() const {
+        return Globals::ZCppEntityBlueprintFactory_vtbl == *(void**)this;
+    }
+
+    bool IsExtendedCppEntityBlueprintFactory() const {
+        return Globals::ZExtendedCppEntityBlueprintFactory_vtbl == *(void**)this;
+    }
+
+    bool IsUIControlBlueprintFactory() const {
+        return Globals::ZUIControlBlueprintFactory_vtbl == *(void**)this;
+    }
+
+    bool IsRenderMaterialEntityBlueprintFactory() const {
+        return Globals::ZRenderMaterialEntityBlueprintFactory_vtbl == *(void**)this;
+    }
+
+    bool IsBehaviorTreeEntityBlueprintFactory() const {
+        return Globals::ZBehaviorTreeEntityBlueprintFactory_vtbl == *(void**)this;
+    }
+
+    bool IsAudioSwitchBlueprintFactory() const {
+        return Globals::ZAudioSwitchBlueprintFactory_vtbl == *(void**)this;
+    }
+
+    bool IsAudioStateBlueprintFactory() const {
+        return Globals::ZAudioStateBlueprintFactory_vtbl == *(void**)this;
     }
 };
 
